@@ -1,18 +1,18 @@
 import re
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, model_validator
 
 
 class SubtitleBlock(BaseModel):
     block: str = Field(..., description="Raw subtitle block text")
-    index: int
-    start_time: str
-    end_time: str
-    text: str
+    index: int = None
+    start_time: str = None
+    end_time: str = None
+    text: str = None
 
-    @field_validator("block", mode="after")
-    def parse_block(cls, block):
-        lines = block.strip().split("\n")
+    @model_validator(mode="after")
+    def parse_block(self):
+        lines = self.block.strip().split("\n")
         if len(lines) < 3:
             raise ValueError("Invalid subtitle block format")
 
@@ -27,13 +27,14 @@ class SubtitleBlock(BaseModel):
         if not time_match:
             raise ValueError("Second line must contain valid SRT time range")
 
-        start_time = lines[1]
-        end_time = lines[2]
+        start_time, end_time = lines[1].split(" --> ")
         text = "\n".join(lines[2:]).strip()
 
-        cls.index = index
-        cls.start_time = start_time
-        cls.end_time = end_time
-        cls.text = text
+        self.index = index
+        self.start_time = start_time
+        self.end_time = end_time
+        self.text = text
+        return self
 
-        return block
+    def __str__(self):
+        return f"SubtitleBlock(index={self.index}, start_time={self.start_time}, end_time={self.end_time}, text={self.text})"
