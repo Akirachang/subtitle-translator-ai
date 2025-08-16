@@ -1,28 +1,32 @@
-import openai
-from dotenv import load_dotenv
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer, pipeline
 
-load_dotenv()
-
-client = openai.OpenAI()
+_translator = None
 
 
-def query_llm(prompt: str, target_language: str, model: str = "gpt-4o"):
-    system_prompt = """
-        You are a professional subtitle translator. Translate subtitle text to 
-        {target_language} while maintaining readability and proper subtitle timing. 
-        Keep the [number] format intact. 
-        """
-    response = client.chat.completions.create(
+def load_nlp_model(
+    model_name="facebook/nllb-200-distilled-600M",
+    src_lang="fra_Latn",
+    tgt_lang="eng_Latn",
+):
+    global _translator
+    if _translator is not None:
+        return _translator
+
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+
+    _translator = pipeline(
+        "translation",
         model=model,
-        messages=[
-            {
-                "role": "system",
-                "content": system_prompt,
-            },
-            {"role": "user", "content": prompt},
-        ],
-        temperature=0.3,  # Lower temperature for more consistent translations
+        tokenizer=tokenizer,
+        src_lang=src_lang,
+        tgt_lang=tgt_lang,
     )
 
-    translated_text = response.choices[0].message.content.strip()
-    return translated_text
+
+def run_translation(texts, batch_size=16, max_length=128):
+    if _translator is None:
+        load_nlp_model()
+
+    out = _translator(texts, batch_size=batch_size, max_length=max_length)
+    return [o["translation_text"] for o in out]

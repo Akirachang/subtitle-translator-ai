@@ -28,7 +28,7 @@ class SubtitleBlock(BaseModel):
             raise ValueError("Second line must contain valid SRT time range")
 
         start_time, end_time = lines[1].split(" --> ")
-        text = "\n".join(lines[2:]).strip()
+        text = "\n".join(lines[2:]).strip().replace("<b>", "").replace("</b>", "")
 
         self.index = index
         self.start_time = start_time
