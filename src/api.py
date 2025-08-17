@@ -1,6 +1,6 @@
 import re
 
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, model_serializer, model_validator
 
 
 class SubtitleBlock(BaseModel):
@@ -35,6 +35,13 @@ class SubtitleBlock(BaseModel):
         self.end_time = end_time
         self.text = text
         return self
+
+    @model_serializer(mode="plain")
+    def serialize(self):
+        block = (
+            f"{self.index}\n{self.start_time} --> {self.end_time}\n<b>{self.text}</b>"
+        )
+        return block
 
     def __str__(self):
         return f"SubtitleBlock(index={self.index}, start_time={self.start_time}, end_time={self.end_time}, text={self.text})"

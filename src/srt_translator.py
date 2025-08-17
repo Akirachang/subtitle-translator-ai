@@ -21,15 +21,29 @@ def bootstrap_input(input_path: str):
     return subtitles
 
 
-def translate_srt(input_path: str, output_path: str, target_language: str):
-    load_nlp_model(model_name="facebook/nllb-200-distilled-600M")
+def translate_srt(
+    input_path: str, output_path: str, src_lang="fra_Latn", tgt_lang="eng_Latn"
+):
+    load_nlp_model(
+        model_name="facebook/nllb-200-distilled-600M",
+        src_lang=src_lang,
+        tgt_lang=tgt_lang,
+    )
 
     try:
-        # Create translator and translate
         structured_subtitles = bootstrap_input(input_path)
         texts = [subtitle.text for subtitle in structured_subtitles]
         translated_texts = run_translation(texts)
-        print(translated_texts)
+
+        for subtitle, translated_text in zip(structured_subtitles, translated_texts):
+            subtitle.text = translated_text
+
+        with open(output_path, "w", encoding="utf-8") as file:
+            for subtitle in structured_subtitles:
+                block = subtitle.serialize()
+                file.write(block + "\n\n")
+
+        print(f"Translation completed. Output saved to {output_path}")
 
     except Exception as e:
         print(f"Error: {e}")
