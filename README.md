@@ -75,7 +75,3 @@ print(sb.serialize())  # back to SRT block (with <b> tags)
 pip install -e .
 python run.py  # uses sample.srt → outputs/translated.srt
 ```
-
-## License
-
-MIT
