@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.svg" alt="subtitle-translator-ai" width="260">
+  <img src="assets/logo.png" alt="subtitle-translator-ai" width="260">
 </p>
 
 ## subtitle-translator-ai
