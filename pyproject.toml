@@ -13,15 +13,12 @@ dependencies = [
 	"python-dotenv>=1.0.0",
 	"pydantic>=2.11.7",
 	"transformers>=4.55.2",
+    "torch>=2.8.0"
 ]
 classifiers = [
 	"Programming Language :: Python :: 3",
 ]
 
-[project.optional-dependencies]
-torch = [
-	"torch", # Install a platform-appropriate build manually if needed
-]
 
 [project.scripts]
 subtitle-translator = "subtitle_translator_ai.cli:main"
