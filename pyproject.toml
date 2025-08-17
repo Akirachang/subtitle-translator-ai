@@ -13,7 +13,7 @@ dependencies = [
 	"python-dotenv>=1.0.0",
 	"pydantic>=2.11.7",
 	"transformers>=4.55.2",
-    "torch>=2.8.0"
+    "torch>=2.8.0",
     "tqdm>=4.67.1"
 ]
 classifiers = [
@@ -30,4 +30,3 @@ packages = ["src/subtitle_translator_ai"]
 [project.urls]
 Homepage = "https://github.com/Akirachang/subtitle-translator-ai"
 Repository = "https://github.com/Akirachang/subtitle-translator-ai"
-
