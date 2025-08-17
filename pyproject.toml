@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling>=1.21"]
+build-backend = "hatchling.build"
+
+[project]
+name = "subtitle-translator-ai"
+version = "0.1.0"
+description = "Translate .srt subtitle files using Hugging Face Transformers"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [{ name = "Akira Chang" }]
+dependencies = [
+	"python-dotenv>=1.0.0",
+	"pydantic>=2.11.7",
+	"transformers>=4.55.2",
+]
+classifiers = [
+	"Programming Language :: Python :: 3",
+]
+
+[project.optional-dependencies]
+torch = [
+	"torch", # Install a platform-appropriate build manually if needed
+]
+
+[project.scripts]
+subtitle-translator = "subtitle_translator_ai.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/subtitle_translator_ai"]
+
+[project.urls]
+Homepage = "https://github.com/Akirachang/subtitle-translator-ai"
+Repository = "https://github.com/Akirachang/subtitle-translator-ai"
+
