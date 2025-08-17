@@ -75,5 +75,4 @@ print(sb.serialize())  # back to SRT block (with <b> tags)
 ## Notes
 
 - Default model: facebook/nllb-200-distilled-600M
-- For better performance, install a GPU-enabled torch for your platform.
 - Output preserves the original timing/index and wraps with tags.
