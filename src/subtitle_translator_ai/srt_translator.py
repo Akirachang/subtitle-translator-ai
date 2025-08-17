@@ -22,7 +22,11 @@ def bootstrap_input(input_path: str):
 
 
 def translate_srt(
-    input_path: str, output_path: str, src_lang="fra_Latn", tgt_lang="eng_Latn"
+    input_path: str,
+    output_path: str,
+    src_lang="fra_Latn",
+    tgt_lang="eng_Latn",
+    batch_size=16,
 ):
     load_nlp_model(
         model_name="facebook/nllb-200-distilled-600M",
@@ -33,7 +37,7 @@ def translate_srt(
     try:
         structured_subtitles = bootstrap_input(input_path)
         texts = [subtitle.text for subtitle in structured_subtitles]
-        translated_texts = run_translation(texts)
+        translated_texts = run_translation(texts, batch_size=batch_size)
 
         for subtitle, translated_text in zip(structured_subtitles, translated_texts):
             subtitle.text = translated_text

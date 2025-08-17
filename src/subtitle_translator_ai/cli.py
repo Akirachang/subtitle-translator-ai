@@ -27,6 +27,13 @@ def main() -> None:
         default="eng_Latn",
         help="Target language code (default: eng_Latn)",
     )
+    parser.add_argument(
+        "--batch-size",
+        type=int,
+        default=16,
+        help="Batch size for translation (default: 16)",
+    )
+
     args = parser.parse_args()
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -35,6 +42,7 @@ def main() -> None:
         str(args.output),
         src_lang=args.src_lang,
         tgt_lang=args.tgt_lang,
+        batch_size=args.batch_size,
     )
     print(f"Translation complete! Output saved to: {args.output}")
 
