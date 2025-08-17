@@ -32,8 +32,6 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -U pip
 pip install -e .
-# Optional (recommended): install PyTorch for your platform
-# pip install torch
 ```
 
 The first run will download the model; expect a large download and some warm-up time.
