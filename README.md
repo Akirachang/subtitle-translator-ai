@@ -7,11 +7,21 @@
   <a href="https://pytorch.org/"><img src="https://img.shields.io/badge/PyTorch-2.8+-ee4c2c.svg?logo=pytorch&logoColor=white" alt="PyTorch"></a>
   <a href="https://huggingface.co/docs/transformers/"><img src="https://img.shields.io/badge/Transformers-4.55+-yellow.svg?logo=huggingface&logoColor=white" alt="Transformers"></a>
   <a href="https://docs.pydantic.dev/"><img src="https://img.shields.io/badge/Pydantic-2.11+-e92063.svg?logo=pydantic&logoColor=white" alt="Pydantic"></a>
+  <a href="https://www.gradio.app/"><img src="https://img.shields.io/badge/Gradio-5.9+-orange.svg?logo=gradio&logoColor=white" alt="Gradio"></a>
   <a href="https://huggingface.co/facebook/nllb-200-distilled-600M"><img src="https://img.shields.io/badge/%F0%9F%A4%97-NLLB--200-FFD21E.svg" alt="NLLB-200"></a>
 </p>
+
+AI-powered subtitle translation that runs entirely on your machine. Transform .srt files across 200+ languages while preserving timing and formatting. Features a web interface, CLI, and Python API.
+
 </div>
 
-Translate .srt subtitle files using Hugging Face Transformers (NLLB-200). Provides a simple Python API and a CLI.
+<div align="center">
+
+![Demo](./public/demos/demo_video.gif)
+
+  <p><em>See how the user can easily translate video editor subtitles just with few clicks</em></p>
+
+</div>
 
 ## 📖 Overview
 
@@ -23,6 +33,18 @@ I use DaVinci Resolve to automatically generate subtitles. It does a great job w
 
 This tool uses smaller, specialized translation models ([facebook/nllb-200-distilled-600M](https://huggingface.co/facebook/nllb-200-distilled-600M)) that are purpose-built for translation tasks, resulting in more consistent and reliable outputs for long-form content.
 
+## 📋 Table of Contents
+
+- [📖 Overview](#-overview)
+- [✨ Features](#-features)
+- [🚀 Installation](#-installation)
+- [💻 Usage](#-usage)
+- [⚙️ Configuration](#️-configuration)
+- [📁 Project Structure](#-project-structure)
+- [🏗️ Architecture](#️-architecture)
+- [🔧 Troubleshooting](#-troubleshooting)
+- [🤝 Contributing](#-contributing)
+
 ## ✨ Features
 
 This project keeps the SRT file as the source of truth:
@@ -30,7 +52,7 @@ This project keeps the SRT file as the source of truth:
 - **Preserves Structure**: Parses SRT blocks with Pydantic and maintains index/timing integrity
 - **HTML Tag Support**: Keeps basic HTML tags that are comprehensible by software (e.g., DaVinci Resolve)
 - **200+ Languages**: Uses Hugging Face NLP model for many language pairs (fra_Latn → eng_Latn by default)
-- **Dual Interface**: Both CLI and Python API for flexible integration
+- **Triple Interface**: Web UI (Gradio), CLI, and Python API for flexible integration
 - **Local Processing**: No API keys required, runs entirely offline
 - **Batch Processing**: Efficient translation with progress tracking using tqdm
 
@@ -61,6 +83,39 @@ pip install subtitle-translator-ai
 **Note**: The first run will download the NLLB-200 model; expect a large download (~2.5GB) and some warm-up time.
 
 ## 💻 Usage
+
+### Web Interface (Gradio)
+
+Launch the interactive web interface with an orange-themed UI:
+
+```bash
+# Basic launch (opens at http://127.0.0.1:7860)
+python run_gradio.py
+
+# Create a public shareable link
+python run_gradio.py --share
+
+# Custom port
+python run_gradio.py --port 8080
+```
+
+Or from Python:
+
+```python
+from subtitle_translator_ai import launch_app
+
+launch_app()  # Opens in browser
+launch_app(share=True)  # Creates public link
+```
+
+The web interface provides:
+
+- Drag-and-drop file upload
+- Language selection dropdowns (20 common languages)
+- Adjustable batch size slider
+- Real-time translation progress
+- One-click download of translated files
+- Custom orange theme
 
 ### CLI
 
@@ -136,6 +191,7 @@ subtitle-translator-ai/
 │       ├── __init__.py          # Package exports
 │       ├── api.py               # Python API interface
 │       ├── cli.py               # CLI entry point
+│       ├── gradio_app.py        # Gradio web interface
 │       ├── srt_translator.py   # Core translation logic
 │       └── utils.py             # Utility functions
 ├── assets/
@@ -143,6 +199,7 @@ subtitle-translator-ai/
 ├── outputs/                     # Translated output files
 ├── sample.srt                   # Example subtitle file
 ├── run.py                       # Quick start script
+├── run_gradio.py               # Gradio launcher script
 ├── pyproject.toml              # Project configuration
 └── README.md                    # This file
 ```
@@ -221,11 +278,7 @@ python -c "from transformers import AutoTokenizer, AutoModelForSeq2SeqLM; AutoTo
 
 ---
 
-## License
-
-This project is open source. See LICENSE file for details.
-
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
