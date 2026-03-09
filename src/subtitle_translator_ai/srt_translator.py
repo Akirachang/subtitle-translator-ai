@@ -40,7 +40,7 @@ def translate_srt(
         translated_texts = run_translation(texts, batch_size=batch_size)
 
         for subtitle, translated_text in zip(structured_subtitles, translated_texts):
-            subtitle.text = translated_text
+            subtitle.text = translated_text  # Update the text with translated text in the subtitle block
 
         with open(output_path, "w", encoding="utf-8") as file:
             for subtitle in structured_subtitles:

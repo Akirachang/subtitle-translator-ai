@@ -65,47 +65,32 @@ The result is a reliable, repeatable translation pipeline that works well on lon
 - Python 3.9 or higher
 - ~2.5GB disk space for the model (downloaded on first run)
 
-### Editable Install (Development)
+### Install
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -U pip
-pip install -e .
-```
-
-### Install from PyPI (Coming Soon)
-
-```bash
-pip install subtitle-translator-ai
+make install
 ```
 
 **Note**: The first run will download the NLLB-200 model; expect a large download (~2.5GB) and some warm-up time.
 
 ## 💻 Usage
 
+### Make Commands
+
+| Command | Description |
+| --- | --- |
+| `make install` | Install the package in editable mode |
+| `make translate INPUT=sample.srt` | Translate a subtitle file |
+| `make translate INPUT=sample.srt OUTPUT=out.srt` | Translate with custom output path |
+| `make gradio` | Launch the Gradio web interface |
+| `make clean` | Remove cache and build artifacts |
+
 ### Web Interface (Gradio)
 
-Launch the interactive web interface with an orange-themed UI:
-
 ```bash
-# Basic launch (opens at http://127.0.0.1:7860)
-python run_gradio.py
-
-# Create a public shareable link
-python run_gradio.py --share
-
-# Custom port
-python run_gradio.py --port 8080
-```
-
-Or from Python:
-
-```python
-from subtitle_translator_ai import launch_app
-
-launch_app()  # Opens in browser
-launch_app(share=True)  # Creates public link
+make gradio
 ```
 
 The web interface provides:
@@ -119,13 +104,11 @@ The web interface provides:
 
 ### CLI
 
-Basic usage:
-
 ```bash
-subtitle-translator sample.srt -o outputs/translated.srt --src-lang fra_Latn --tgt-lang eng_Latn
+make translate INPUT=sample.srt
 ```
 
-**Options**:
+**Options** (pass directly to the CLI for advanced usage):
 
 - `--src-lang`: Source language code (default: `fra_Latn`)
 - `--tgt-lang`: Target language code (default: `eng_Latn`)
@@ -200,6 +183,7 @@ subtitle-translator-ai/
 ├── sample.srt                   # Example subtitle file
 ├── run.py                       # Quick start script
 ├── run_gradio.py               # Gradio launcher script
+├── Makefile                    # Make commands for common tasks
 ├── pyproject.toml              # Project configuration
 └── README.md                    # This file
 ```
